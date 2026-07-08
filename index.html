@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Una domanda importante...</title>
+    <style>
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+            background: linear-gradient(135deg, #ffdde1 0%, #ee9ca7 100%); 
+            color: #333;
+            text-align: center; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            min-height: 100vh; 
+            margin: 0; 
+            overflow: hidden; 
+        }
+        .container { 
+            padding: 20px; 
+            max-width: 400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .hidden { display: none !important; }
+        h1 { color: #ff4d6d; font-size: 24px; margin-bottom: 20px; }
+        p { font-size: 16px; margin-bottom: 20px; }
+        .gif-container img { border-radius: 10px; max-width: 100%; height: auto; margin-bottom: 15px; }
+        
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            min-height: 150px;
+            justify-content: center;
+        }
+        .btn { 
+            padding: 15px 30px; 
+            font-size: 18px; 
+            font-weight: bold;
+            border: none; 
+            border-radius: 50px; 
+            cursor: pointer; 
+            transition: all 0.3s ease;
+            width: 80%;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        #btn-yes { background-color: #ff4d6d; color: white; transform-origin: center; }
+        #btn-no { background-color: #f8f9fa; color: #333; }
+        
+        .options { display: flex; flex-direction: column; gap: 15px; text-align: left; }
+        label { font-weight: bold; color: #555; font-size: 14px; }
+        select, input { 
+            padding: 12px; 
+            font-size: 16px; 
+            border-radius: 10px; 
+            border: 1px solid #ddd; 
+            background: #f8f9fa;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        #btn-submit {
+            background-color: #ff4d6d;
+            color: white;
+            margin-top: 10px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- FASE 1: La Proposta -->
+    <div id="step1" class="container">
+        <div class="gif-container">
+            <!-- Puoi cambiare l'URL della GIF con quella che preferisci -->
+            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExc29pdDF1azNxbmpxczIyaDczN2F1bDBpMzI1eGdzZWhpeGszcTJkayZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/LmgKDE3Z3gA9TzhxH4/giphy.gif" alt="Orsetto carino">
+        </div>
+        <h1>Ehi, volevo chiederti una cosa...<br>Vuoi uscire con me?</h1>
+        <div class="buttons">
+            <button id="btn-yes" class="btn" onclick="sayYes()">Sì! 🥰</button>
+            <button id="btn-no" class="btn" onclick="sayNo()">No</button>
+        </div>
+    </div>
+
+    <!-- FASE 2: La Pianificazione -->
+    <div id="step2" class="container hidden">
+        <h1>Sapevo che avresti fatto la scelta giusta! 🎉</h1>
+        <p>Ora pianifichiamo l'appuntamento perfetto:</p>
+        <div class="options">
+            <div>
+                <label>Cosa mangiamo?</label>
+                <select id="food">
+                    <option>Pizza (Scelta praticamente obbligatoria) 🍕</option>
+                    <option>Sushi (Offro io) 🍣</option>
+                    <option>Hamburger zozzo 🍔</option>
+                </select>
+            </div>
+            <div>
+                <label>Cosa facciamo dopo?</label>
+                <select id="activity">
+                    <option>Passeggiata romantica e gelato 🍦</option>
+                    <option>Cinema (scegli tu il film) 🍿</option>
+                    <option>Rapiniamo una banca (maschere incluse) 🏦</option>
+                </select>
+            </div>
+            <div>
+                <label>Quando?</label>
+                <select id="time">
+                    <option>Questo weekend</option>
+                    <option>La prossima settimana</option>
+                    <option>Subito, sto già scendendo le scale</option>
+                </select>
+            </div>
+            <button id="btn-submit" class="btn" onclick="finish()">Conferma il piano!</button>
+        </div>
+    </div>
+
+    <!-- FASE 3: Conclusione -->
+    <div id="step3" class="container hidden">
+        <h1>Perfetto! 📝</h1>
+        <div class="gif-container">
+            <img src="https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif" alt="Vittoria">
+        </div>
+        <p>Fai uno screenshot di questa schermata e mandamelo su WhatsApp così lo metto a calendario!</p>
+    </div>
+
+    <script>
+        let noClickCount = 0;
+        const noTexts = [
+            "No", 
+            "Sei sicura?", 
+            "Pensaci bene...", 
+            "Dai, non fare così!", 
+            "Mi spezzi il cuore 💔", 
+            "Dai, clicca l'altro tasto!", 
+            "Ok, ora smetto di chiederlo", 
+            "Scherzavo, non puoi dirmi di no! 😈"
+        ];
+        
+        function sayNo() {
+            noClickCount++;
+            const btnNo = document.getElementById("btn-no");
+            const btnYes = document.getElementById("btn-yes");
+            
+            // Cambia il testo del pulsante No
+            if (noClickCount < noTexts.length) {
+                btnNo.innerText = noTexts[noClickCount];
+            } else {
+                btnNo.innerText = "Devi cliccare Sì!";
+            }
+            
+            // Ingrandisce progressivamente il pulsante Sì
+            const newScale = 1 + (noClickCount * 0.4);
+            btnYes.style.transform = `scale(${newScale})`;
+        }
+
+        function sayYes() {
+            document.getElementById("step1").classList.add("hidden");
+            document.getElementById("step2").classList.remove("hidden");
+        }
+
+        function finish() {
+            document.getElementById("step2").classList.add("hidden");
+            document.getElementById("step3").classList.remove("hidden");
+        }
+    </script>
+</body>
+</html>
